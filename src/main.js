@@ -50,8 +50,8 @@ axios.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           handle401(error);
-        case 700:
-          router.replace({path:'/', query: {redirect:router.currentRoute.fullPath}})
+        // case 700:
+        //   router.replace({path:'/', query: {redirect:router.currentRoute.fullPath}});
       }
     }
     return Promise.reject(error.response.data);

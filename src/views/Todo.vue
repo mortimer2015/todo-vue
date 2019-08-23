@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div>
         <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
         <el-form :inline="true" :model="form">
             <el-form-item label="名称">
@@ -22,8 +22,9 @@
         </el-table>
 
         <el-dialog title="修改" :visible.sync="dialogVisible" width="40%" :before-close="handleClose">
-            <el-form :inline="true" :model="form1">
-                <el-form-item label="名称">
+            <el-form :model="form1">
+                
+                <el-form-item label="名称" :inline="true">
                     <el-input v-model="form1.id" placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="状态">
