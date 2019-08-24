@@ -60,9 +60,9 @@ export default {
 .el-aside {
     top: 1px;
     left: 1px;
-    display: block;
+    /* display: block; */
     position: relative;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     background-color: #545c64 !important;
 }
 </style>
