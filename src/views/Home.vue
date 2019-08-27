@@ -1,12 +1,7 @@
 <template>    
 <el-container>
     <el-header>
-        <!-- <el-row class="container"> -->
-        <!-- <h1>222</h1> -->
-        <router-link to="/home">
-            <img height="60" width="60" src="../assets/logo.png">
-        </router-link>
-        <!-- <h1>23444444444444444433</h1> -->
+        <Vheader/>
     </el-header>
     <el-container>
         <el-aside width="220px">
@@ -23,6 +18,7 @@
                 <el-menu-item index="/weather/hot">热热热</el-menu-item>
                 <el-menu-item index="/weather/cold">冷冷冷</el-menu-item>
             </el-submenu>
+            <!-- <el-menu-item index="/login">登录</el-menu-item> -->
 
             </el-menu>
         </el-aside>
@@ -36,6 +32,8 @@
 </template>
 
 <script>
+import Vheader from '../components/Header.vue'
+
 export default {
     methods: {
     handleOpen() {
@@ -44,10 +42,19 @@ export default {
     handleClose() {
 
     },
+    logout() {
+            this.axios.get("/auth/logout").then((response) =>{
+                console.log(response.data)
+                // this.getData()
+                this.$message({message: "退出登录",type: 'success',showClose: true,})
+                this.$router.push("/login")
+            })
+        }
   },
   computed: {
     
-  }
+  },
+    components: {Vheader}
 }
 </script>
 
@@ -55,6 +62,12 @@ export default {
 <style>
 .el-header {
     background-color: #545c64;
+}
+.el-header .frr {
+    float: right;
+}
+.el-header .bigtext {
+    font-size:14px
 }
 
 .el-aside {

@@ -7,6 +7,7 @@ import Weater from './views/weather_base.vue'
 import Hot from './views/weather/hot.vue'
 import Cold from './views/weather/cold.vue'
 import VueHome from './views/VueHome.vue'
+import Login from './views/Login.vue'
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ export default new Router({
           component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     
   ]

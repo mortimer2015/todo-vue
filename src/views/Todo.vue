@@ -8,7 +8,7 @@
             <el-button @click="pushData">新增</el-button>
         </el-form>
         
-        <el-table :data="tableData">
+        <el-table :data="tableData.list">
             <el-table-column prop="i" label="ID"></el-table-column>
             <el-table-column prop="id" label="名称"></el-table-column>
             <el-table-column label="状态" prop="status"></el-table-column>
@@ -20,6 +20,15 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page=page.page_num
+            :page-sizes="[2, 4, 6]"
+            :page-size=page.page_size
+            layout="total, sizes, prev, pager, next, jumper"
+            :total=tableData.total>
+        </el-pagination>
 
         <el-dialog title="修改" :visible.sync="dialogVisible" width="40%" :before-close="handleClose">
             <el-form :model="form1">
@@ -58,6 +67,10 @@ export default {
                 i: "",
                 id: "",
                 status: ""
+            },
+            page: {
+                page_size: 2,
+                page_num: 1,
             }
         }
     },
@@ -70,7 +83,10 @@ export default {
     },
     methods: {
         getData() {
-            this.axios.get("/todo/list").then((response) => {
+            this.axios.get("/todo/list", {params: {
+                page_size: this.page.page_size, 
+                page_num:this.page.page_num
+                }}).then((response) => {
             console.log(response.data)
             this.tableData = response.data.data
             })
@@ -82,8 +98,9 @@ export default {
             }).then((response) =>{
                 console.log(response.data)
                 this.getData()
+                this.$message({message: "添加成功",type: 'success',showClose: true,})
             })
-            this.$message({message: "添加成功",type: 'success',showClose: true,})
+            
             // this.tableData.push({id:this.form.id, status:'wait'})
             
         },
@@ -126,7 +143,19 @@ export default {
         },
         handleClose() {
             this.dialogVisible = false
-        }
+        },
+        handleCurrentChange(val){
+            this.page.page_num = val;
+            this.getData();
+        },
+        handleSizeChange(val){
+            // let pages = Math.ceil(this.tableData.total / val);
+            this.page.page_size = val;
+            // if(this.page.page_size > pages ){
+            //     this.page.page_size  = 1;
+            // }
+            this.getData()
+        },
 
     }
 }
@@ -136,4 +165,9 @@ export default {
 .el-delete-button{
     color: red;
 }
+.el-pagination {
+    float: right;
+}
+
+
 </style>

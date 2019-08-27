@@ -7,7 +7,7 @@ import store from './store'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
  
-axios.defaults.baseURL = "http://127.0.0.1:5000"
+// axios.defaults.baseURL = "http://127.0.0.1:5000"
 
 axios.interceptors.request.use(
   config => {
@@ -32,7 +32,7 @@ function handle401(error) {
     duration: 5 * 1000
   });
   router.replace({
-    path: '/',
+    path: '/login',
     query: {redirect: router.currentRoute.fullPath}
   });
 }

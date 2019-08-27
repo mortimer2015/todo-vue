@@ -10,7 +10,7 @@ export default {
     name: 'test',
     data() {
         return {
-            msg: 'hot'
+            msg: 'hot hot'
         }
     },
 }
