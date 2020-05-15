@@ -61,7 +61,7 @@ export default {
 
 <style>
 .el-header {
-    background-color: #545c64;
+    background-color: #505255;
 }
 .el-header .frr {
     float: right;
@@ -71,8 +71,8 @@ export default {
 }
 
 .el-aside {
-    top: 1px;
-    left: 1px;
+    top: 0px;
+    left: 0px;
     /* display: block; */
     position: relative;
     /* overflow-y: scroll; */

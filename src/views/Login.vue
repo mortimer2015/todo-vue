@@ -22,14 +22,17 @@ export default {
     },
     methods: {
         login() {
-            this.axios.post("/auth/login", {
-                user_name: this.form.name,
-            }).then((response) =>{
-                console.log(response.data)
-                // this.getData()
-                this.$router.push("/home")
-                this.$message({message: "登录成功",type: 'success',showClose: true,})
-            })
+            // this.axios.post("/auth/login", {
+            //     user_name: this.form.name,
+            // }).then((response) =>{
+            //     console.log(response.data)
+            //     // this.getData()
+            //     this.$router.push("/home")
+            //     this.$message({message: "登录成功",type: 'success',showClose: true,})
+            // })
+            localStorage.name = this.form.name;
+            this.$router.push("/home")
+            this.$message({message: "登录成功",type: 'success',showClose: true,})
         },
         
     }
