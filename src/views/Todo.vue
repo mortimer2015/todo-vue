@@ -3,24 +3,26 @@
         <el-card>
             <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
             <el-form :inline="true" :model="form">
-                <el-form-item label="名称">
+                <el-form-item label="名称：">
                     <el-input v-model="form.name" placeholder="请输入"></el-input>
                 </el-form-item>
-                <el-form-item label="数值">
+                <el-form-item label="状态：">
                     <el-input v-model="form.value" placeholder="请输入"></el-input>
                 </el-form-item>
-                <el-form-item label="描述">
+                <el-form-item label="描述：">
                     <el-input v-model="form.describe" placeholder="请输入"></el-input>
                 </el-form-item>
-                <el-button @click="pushData" type="primary">新增</el-button>
+                <el-button @click="pushData1" type="primary">查询</el-button>
             </el-form>
         </el-card>
         <el-card>
+            <el-button @click="showAdd" type="primary">新增</el-button>
             <el-table :data="tableData">
                 <el-table-column prop="id" label="ID"></el-table-column>
                 <el-table-column prop="name" label="名称"></el-table-column>
+                <el-table-column prop="value" label="状态"></el-table-column>
                 <el-table-column prop="describe" label="描述"></el-table-column>
-                
+
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button type="text" @click="showEdit(scope.row)">修改</el-button>
@@ -38,20 +40,28 @@
                 :total=tableData.total>
             </el-pagination>
         </el-card>
-        <el-dialog title="修改" :visible.sync="dialogVisible" width="40%" :before-close="handleClose">
-            <el-form :model="form1">
+        <el-dialog title="TODO操作" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-form :model="form1" label-width="80px">
                 <el-form-item label="名称">
                     <el-input v-model="form1.name" placeholder="请输入"></el-input>
                 </el-form-item>
-                <el-form-item label="数值">
-                    <el-input v-model="form1.value" placeholder="请输入"></el-input>
+                <el-form-item label="状态">
+                    <!-- <el-input v-model="form1.value" placeholder="请输入"></el-input> -->
+                    <el-select v-model="form1.value">
+                        <el-option value="已办">已办</el-option>
+                        <el-option value="未办">未办</el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="描述">
-                    <el-input v-model="form1.describe" placeholder="请输入"></el-input>
+                    <el-input v-model="form1.describe" placeholder="请输入" type="textarea" :autosize="{minRows: 2, maxRows: 4}"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="pushData" type="primary" v-show="this.dialogTypeAdd">确认</el-button>
+                    <el-button @click="editOne" type="primary" v-show="!this.dialogTypeAdd">确认</el-button>
+                    <el-button @click="dialogVisible = false">取 消</el-button>
                 </el-form-item>
             </el-form>
-            <el-button @click="editOne" type="primary">修改</el-button>
-            <el-button @click="dialogVisible = false">取 消</el-button>
+
         </el-dialog>
     </div>
 </template>
@@ -69,6 +79,7 @@ export default {
         return {
             msg: '2333',
             dialogVisible: false,
+            dialogTypeAdd: true,
             tableData: [],
             form: {
                 id: "",
@@ -98,7 +109,7 @@ export default {
     methods: {
         getData() {
             this.axios.get("http://localhost:8080/todo/list", {params: {
-                page_size: this.page.page_size, 
+                page_size: this.page.page_size,
                 page_num:this.page.page_num
                 }}).then((response) => {
             console.log(response.data)
@@ -107,17 +118,16 @@ export default {
         },
         pushData() {
             this.axios.post("http://localhost:8080/todo/add", {
-                value: this.form.value,
-                name: this.form.name,
-                describe: this.form.describe
+                value: this.form1.value,
+                name: this.form1.name,
+                describe: this.form1.describe
             }).then((response) =>{
                 console.log(response.data)
                 this.getData()
                 this.$message({message: "添加成功",type: 'success',showClose: true,})
             })
-            
+            this.dialogVisible = false
             // this.tableData.push({id:this.form.id, status:'wait'})
-            
         },
         deleteOne(i) {
             this.axios.post("http://localhost:8080/todo/delete", {id: i}).then((response) => {
@@ -130,12 +140,22 @@ export default {
             //     }
             // }
         },
+        showAdd() {
+            this.form1.name = ""
+            this.form1.value = ""
+            this.form1.describe = ""
+            this.dialogVisible = true
+            this.dialogTypeAdd = true
+            console.log(this.form1)
+            console.log(this.dialogVisible)
+        },
         showEdit(row) {
             this.form1.id = row.id
             this.form1.name = row.name
             this.form1.value = row.value
             this.form1.describe = row.describe
             this.dialogVisible = true
+            this.dialogTypeAdd = false
             console.log(this.form1)
             console.log(this.dialogVisible)
         },
@@ -143,7 +163,7 @@ export default {
             // for (var i in this.tableData) {
             //     if (this.tableData[i].id === this.form1.id) {
             //         this.tableData[i].status = this.form1.status
-                    
+
             //     }
             // }
             this.axios.post("http://localhost:8080/todo/edit", {
@@ -182,9 +202,9 @@ export default {
 .el-delete-button{
     color: red;
 }
-.el-pagination {
-    float: right;
-}
+/*.el-pagination {*/
+/*    float: right;*/
+/*}*/
 
 
 </style>
